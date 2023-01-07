@@ -1,6 +1,25 @@
 <script setup>
 import { RouterLink } from 'vue-router';
 import FeatureListsVue from '../components/authentication/FeatureLists.vue';
+import axios from 'axios';
+
+async function checkout(price) {
+  try {
+    const response = await axios.post('https://zullkit-backend.buildwithangga.id/api/checkout',{
+      payment_total: price,
+      payment_status: 'PENDING'
+    },
+    {
+      headers: {
+        authorization: localStorage.getItem('token_type') + ' ' + localStorage.getItem('access_token')
+      }
+    })
+    window.location.href = response.data.data.payment_url
+  } catch (error) {
+    console.log(error);
+  }
+}
+
 </script>
 
 <template>
@@ -44,7 +63,7 @@ import FeatureListsVue from '../components/authentication/FeatureLists.vue';
                       Pre-built design screen
                     </li>
                   </ul>
-                  <RouterLink to="/success" class="inline-flex items-center justify-center w-full px-8 py-3 text-base font-medium text-black bg-gray-200 border border-transparent rounded-full hover:bg-gray-300 md:py-2 md:text-md md:px-10 hover:shadow"> Checkout Now </RouterLink>
+                  <button @click="checkout(2000)" class="inline-flex items-center justify-center w-full px-8 py-3 text-base font-medium text-black bg-gray-200 border border-transparent rounded-full hover:bg-gray-300 md:py-2 md:text-md md:px-10 hover:shadow"> Checkout Now </button>
                 </div>
               </div>
               <div>
@@ -90,7 +109,7 @@ import FeatureListsVue from '../components/authentication/FeatureLists.vue';
                       Unlock cloning app
                     </li>
                   </ul>
-                  <RouterLink to="/success" class="inline-flex items-center justify-center w-full px-8 py-3 text-base font-medium text-white bg-indigo-600 border border-transparent rounded-full hover:bg-indigo-700 md:py-2 md:text-md md:px-10 hover:shadow"> Checkout Now </RouterLink>
+                  <button @click="checkout(9000)" class="inline-flex items-center justify-center w-full px-8 py-3 text-base font-medium text-white bg-indigo-600 border border-transparent rounded-full hover:bg-indigo-700 md:py-2 md:text-md md:px-10 hover:shadow"> Checkout Now </button>
                 </div>
               </div>
             </div>

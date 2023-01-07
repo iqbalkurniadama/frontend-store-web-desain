@@ -3,8 +3,12 @@ import GalleryVue from '@/components/detail/Gallery.vue';
 import { RouterLink, useRoute } from 'vue-router';
 import { ref, onMounted, computed } from 'vue';
 import axios from 'axios';
+import { useUserStore } from '../stores/user';
 
 const route = useRoute()
+const userStore = useUserStore()
+
+const user = computed(() => userStore.getUser)
 const item = ref(false)
 
 async function getProduct() {
@@ -22,6 +26,7 @@ const features = computed(() => {
 })
 
 onMounted(() => {
+  // userStore.fetchUser()
   window.scrollTo(0,0)
   getProduct()
 })
@@ -77,7 +82,8 @@ onMounted(() => {
                   </li>
                 </ul>
               </div>
-              <RouterLink to="/pricing" class="inline-flex items-center justify-center w-full px-8 py-3 text-base font-medium text-white bg-indigo-600 border border-transparent rounded-full hover:bg-indigo-700 md:py-2 md:text-md md:px-10 hover:shadow"> Download Now </RouterLink>
+                <a v-if="user.data.subscription.length > 0" :href="item.file" class="inline-flex items-center justify-center w-full px-8 py-3 text-base font-medium text-white bg-indigo-600 border border-transparent rounded-full hover:bg-indigo-700 md:py-2 md:text-md md:px-10 hover:shadow"> Download Now </a>
+                <RouterLink v-else to="/pricing" class="inline-flex items-center justify-center w-full px-8 py-3 text-base font-medium text-white bg-indigo-600 border border-transparent rounded-full hover:bg-indigo-700 md:py-2 md:text-md md:px-10 hover:shadow"> Subscribe </RouterLink>
             </div>
           </div>
         </aside>
